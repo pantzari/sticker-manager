@@ -1,0 +1,422 @@
+/* ============================================================
+   Reaction Sticker Book
+   Dark, cute purple lined-paper theme
+   ============================================================ */
+
+/* 1. VARIABLES */
+
+$paper: #241b38;
+$paper-line: #35294f;
+$margin-line: #7a3f66;
+
+$sidebar-bg: #1e1630;
+$toolbar-bg: #241b3a;
+$hole: #120d1c;
+
+$border: #3a2f5c;
+$field: #31254f;
+
+$text: #ece6fa;
+$text-soft: #d9ccf5;
+$text-muted: #8f82b3;
+
+$accent: #b79cff;
+$accent-bg: #3a2d63;
+
+$line-h: 28px;
+$radius-card: 10px;
+
+$font-ui:
+  -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto,
+  sans-serif;
+
+$font-note: Georgia, "Times New Roman", serif;
+
+$tape-colors: (#ffa6d6, #b79cff, #9be3c4, #ffd78a, #8cc4f5);
+
+$sticker-rotations: (-1.5deg, 2deg, -1deg, 1.5deg, -2deg, 1deg);
+
+/* 2. BASE */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: $font-ui;
+  font-size: 13px;
+  color: $text;
+  background: $sidebar-bg;
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 2px solid $accent;
+  outline-offset: 2px;
+}
+
+/* 3. APP SHELL */
+
+.app {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  background: $sidebar-bg;
+}
+
+/* 4. SIDEBAR */
+
+.sidebar {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  width: 190px;
+  flex-shrink: 0;
+  padding: 14px 10px 14px 30px;
+
+  background: $sidebar-bg;
+  border-right: 0.5px solid $border;
+
+  /* Binder holes */
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: 9px;
+    top: 70px;
+
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+
+    background: $hole;
+
+    box-shadow:
+      0 130px 0 0 $hole,
+      0 260px 0 0 $hole;
+  }
+
+  &__drag {
+    height: $line-h;
+    -webkit-app-region: drag;
+  }
+
+  &__label {
+    height: $line-h;
+    line-height: $line-h;
+
+    font-size: 11px;
+    font-weight: 500;
+    color: $text-muted;
+
+    border-bottom: 0.5px solid $paper-line;
+
+    &--spaced {
+      margin-top: 10px;
+    }
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: space-between;
+    width: 100%;
+    height: 32px;
+
+    text-align: left;
+    color: $text;
+    text-decoration: none;
+
+    border-bottom: 0.5px solid $paper-line;
+
+    &:hover {
+      background: rgba(183, 156, 255, 0.08);
+    }
+
+    /* Active navigation item */
+
+    &.router-link-active,
+    &.is-active {
+      margin-left: -8px;
+      padding-left: 8px;
+
+      border-radius: 6px;
+      background: $accent-bg;
+      color: #fff;
+    }
+  }
+
+  &__new {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    height: 32px;
+    color: $accent;
+  }
+}
+
+/* 5. TOOLBAR */
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 10px 16px;
+
+  background: $toolbar-bg;
+  border-bottom: 0.5px solid $border;
+
+  -webkit-app-region: drag;
+
+  input,
+  button {
+    -webkit-app-region: no-drag;
+  }
+
+  &__titles {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__title {
+    margin: 0;
+
+    font-family: $font-note;
+    font-style: italic;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.2;
+  }
+
+  &__count {
+    font-size: 11px;
+    color: $text-muted;
+  }
+
+  &__search {
+    width: 150px;
+    padding: 5px 9px;
+
+    border: 0;
+    border-radius: 6px;
+
+    background: $field;
+    color: $text;
+
+    font: inherit;
+    font-size: 12px;
+
+    &::placeholder {
+      color: #9a8dbb;
+    }
+  }
+
+  &__btn {
+    padding: 4px 8px;
+    border-radius: 6px;
+    background: $field;
+  }
+}
+
+/* 6. MAIN CONTENT / LINED PAPER */
+
+.main {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.paper {
+  position: relative;
+  flex: 1;
+
+  overflow-y: auto;
+  padding: 22px 20px 56px 64px;
+
+  background-color: $paper;
+
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 27px,
+    $paper-line 27px,
+    $paper-line 28px
+  );
+
+  background-attachment: local;
+
+  /* Pink margin line */
+
+  &::before {
+    content: "";
+    position: absolute;
+
+    left: 46px;
+    top: 0;
+    bottom: 0;
+
+    width: 1.5px;
+    background: $margin-line;
+  }
+}
+
+/* 7. STICKER GRID */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 30px 18px;
+}
+
+.sticker {
+  position: relative;
+  padding: 0;
+  text-align: center;
+
+  transition: transform 0.15s ease;
+
+  &__tape {
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    z-index: 1;
+
+    width: 44px;
+    height: 14px;
+    margin-left: -22px;
+
+    border-radius: 2px;
+    opacity: 0.85;
+  }
+
+  &__img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+
+    border-radius: $radius-card;
+    border: 0.5px solid #5a4a92;
+
+    background: #3b2d70;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__name {
+    margin-top: 6px;
+
+    font-family: $font-note;
+    font-style: italic;
+    font-size: 13px;
+
+    color: $text-soft;
+  }
+
+  /* Selected / just copied */
+
+  &.is-copied {
+    .sticker__img {
+      border: 1.5px solid $accent;
+    }
+  }
+
+  &:hover {
+    transform: rotate(0deg) translateY(-3px);
+  }
+}
+
+/* Sticker rotations using a loop */
+
+@for $i from 1 through 6 {
+  .sticker:nth-child(6n + #{$i}) {
+    transform: rotate(nth($sticker-rotations, $i));
+  }
+}
+
+/* Tape colours using a loop */
+
+@for $i from 1 through 5 {
+  .sticker:nth-child(5n + #{$i}) {
+    .sticker__tape {
+      background: nth($tape-colors, $i);
+    }
+  }
+}
+
+/* 8. COPIED NOTIFICATION */
+
+.toast {
+  position: fixed;
+
+  left: 50%;
+  bottom: 18px;
+
+  transform: translateX(-50%);
+
+  padding: 6px 14px;
+  border-radius: 999px;
+
+  background: $text;
+  color: #1b1233;
+
+  font-size: 12px;
+  font-weight: 500;
+
+  white-space: nowrap;
+
+  /* Vue Transition classes */
+
+  &-enter-active,
+  &-leave-active {
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  &-enter-from,
+  &-leave-to {
+    opacity: 0;
+    transform: translate(-50%, 8px);
+  }
+}
+
+/* 9. REDUCED MOTION */
+
+@media (prefers-reduced-motion: reduce) {
+  .sticker,
+  .toast-enter-active,
+  .toast-leave-active {
+    transition: none;
+  }
+}
